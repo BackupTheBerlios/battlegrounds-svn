@@ -104,7 +104,7 @@ void CMappedParticle::InitValues( void )
 	sParticle.flLastSort = 0.0;
 	sParticle.flSquareDistanceToPlayer = 0.0;
 
-	// update lightlevel everytime we sort
+	// check lightlevel once when the particle is spawned
 	if (pSys->iParticleLightCheck == CHECK_ONCE)
 	{
 		// great thanks go to Sneaky_Bastard and randomnine for helping me alot to finding 
