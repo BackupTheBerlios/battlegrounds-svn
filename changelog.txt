@@ -1,0 +1,23 @@
+The Battle Grounds Changelog:
+
+
+
+
+
+
+
+
+
+
+BG 1.2.2 b RC 4.1
+==================
+
+BP: (28.09.04)
+- added cl_reinitparticles: removes all particlesystems, clears all textures and lets the server reinit all mapped particle systems
+- removed clientcommand "drop"
+
+
+
+
+
+no records about older builds...
