@@ -248,6 +248,44 @@ CBarrelParticle::CBarrelParticle(vec3_t vPosition, vec3_t vDirection, particle_t
 	InitValues(); 
 	sParticle.vPosition = vPosition;
 	sParticle.pTexture = pParticleTexture;
+
+	// check lightlevel once when the particle is spawned
+	// great thanks go to Sneaky_Bastard and randomnine for helping me alot to finding 
+	// this great method of obtaining lightlevel on the clientside
+	
+	// create temporary entity to get illumination from it
+	alight_t lighting;
+	cl_entity_t *LightEntity;
+	vec3_t dir;
+
+	// bogus data as valve calls it :)
+	LightEntity = gEngfuncs.GetLocalPlayer();
+
+	if ( !LightEntity )
+		return;
+
+	// move it in the particles location
+	LightEntity->origin = sParticle.vPosition;
+	
+	// I have no idea what this does but if you don't do it -> crash
+	lighting.plightvec = dir;
+
+	IEngineStudio.StudioDynamicLight(LightEntity, &lighting );
+	IEngineStudio.StudioSetupLighting (&lighting);
+	IEngineStudio.StudioEntityLight( &lighting );
+	
+	// make it a little brighter because we want bright smoke
+	sParticle.iRed = (int)(lighting.color[0] * lighting.shadelight * 1.5f);
+	sParticle.iGreen = (int)(lighting.color[1] * lighting.shadelight * 1.5f);
+	sParticle.iBlue = (int)(lighting.color[2] * lighting.shadelight * 1.5f);
+
+	// but make sure we dont go over the limits
+	if (sParticle.iRed > 255)
+		sParticle.iRed = 255;
+	if (sParticle.iGreen > 255)
+		sParticle.iGreen = 255;
+	if (sParticle.iBlue > 255)
+		sParticle.iBlue = 255;
 }
 
 // give the flint particle its default values
@@ -412,6 +450,43 @@ CWhiteSmokeParticle::CWhiteSmokeParticle(vec3_t vPosition, vec3_t vDirection, pa
 	InitValues(); 
 	sParticle.vPosition = vPosition;
 	sParticle.pTexture = pParticleTexture;
+
+
+	// check lightlevel once when the particle is spawned
+	// great thanks go to Sneaky_Bastard and randomnine for helping me alot to finding 
+	// this great method of obtaining lightlevel on the clientside
+	
+	// create temporary entity to get illumination from it
+	alight_t lighting;
+	cl_entity_t *LightEntity;
+	vec3_t dir;
+
+	// bogus data as valve calls it :)
+	LightEntity = gEngfuncs.GetLocalPlayer();
+
+	if ( !LightEntity )
+		return;
+
+	// move it in the particles location
+	LightEntity->origin = sParticle.vPosition;
+	
+	// I have no idea what this does but if you don't do it -> crash
+	lighting.plightvec = dir;
+
+	IEngineStudio.StudioDynamicLight(LightEntity, &lighting );
+	IEngineStudio.StudioSetupLighting (&lighting);
+	IEngineStudio.StudioEntityLight( &lighting );
+	
+	sParticle.iRed = (int)(lighting.color[0] * lighting.shadelight * 1.5f);
+	sParticle.iGreen = (int)(lighting.color[1] * lighting.shadelight * 1.5f);
+	sParticle.iBlue = (int)(lighting.color[2] * lighting.shadelight * 1.5f);
+
+	if (sParticle.iRed > 255)
+		sParticle.iRed = 255;
+	if (sParticle.iGreen > 255)
+		sParticle.iGreen = 255;
+	if (sParticle.iBlue > 255)
+		sParticle.iBlue = 255;
 }
 
 // give the flint particle its default values
