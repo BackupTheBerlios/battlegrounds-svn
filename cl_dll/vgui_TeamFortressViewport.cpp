@@ -1853,6 +1853,15 @@ int TeamFortressViewport::MsgFunc_Particles( const char *pszName, int iSize, voi
 		pSystem.vDirection.z = READ_COORD();
 		unsigned int iPresetSystem = READ_SHORT();
 
+		// to reinit particle on runtime we hijack preset 9999
+		if (iPresetSystem == 9999)
+		{
+			// BP - Clear Particle Systems
+			pParticleManager->RemoveSystems();	
+			pParticleManager->RemoveTextures();
+			return 1;
+		}
+
 		// no present, we just create according to the file
 		if (iPresetSystem == 0) {
 			char sDefinitionFile[256];

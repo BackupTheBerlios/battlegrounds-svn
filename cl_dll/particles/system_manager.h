@@ -53,8 +53,6 @@ private:
 	bool CheckDrawSystem( void );
 	// deletes all particles
 	void RemoveParticles( void );
-	// clears the textures map
-	void RemoveTextures( void );
 	// returns the length of time between this draw and the last one
 	inline float TimeSinceLastDraw( void ) const { return (gEngfuncs.GetClientTime() - m_flLastDraw); }
 
@@ -67,6 +65,8 @@ public:
 	void RemoveSystems( void );
 	// remove a single system
 	void RemoveSystem( unsigned int iSystem);
+	// clears the textures map
+	void RemoveTextures( void );
 
 	// updates all systems
 	void UpdateSystems( void );

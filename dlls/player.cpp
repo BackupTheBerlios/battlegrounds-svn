@@ -2036,7 +2036,27 @@ float flNextPrint = 0;
 
 void CBasePlayer::PreThink(void)
 {
-	if(m_bSpawnPS == true) {
+
+	if((m_bReSpawnPS == true) && (m_bSpawnPS == false)) 
+	{
+		if (m_bFirstTime)
+		{
+			pLastRePSSpawned = NULL;
+			m_bFirstTime = false;
+		}
+	
+		if(m_flLastPSReSpawn < gpGlobals->time) {
+			pLastRePSSpawned = (CParticleEmitter*)UTIL_FindEntityByClassname( pLastRePSSpawned, "env_particleemitter" );
+			if(pLastRePSSpawned != NULL)
+				pLastRePSSpawned->MakeAware( this );
+			else
+				m_bReSpawnPS = false;
+
+			m_flLastPSReSpawn = gpGlobals->time + 0.2;				
+		}
+	}
+	
+	if((m_bSpawnPS == true) && (m_bReSpawnPS == false)) {
 		if(m_flLastPSSpawn < gpGlobals->time) {
 			pLastPSSpawned = (CParticleEmitter*)UTIL_FindEntityByClassname( pLastPSSpawned, "env_particleemitter" );
 			if(pLastPSSpawned != NULL)
@@ -2047,7 +2067,7 @@ void CBasePlayer::PreThink(void)
 			m_flLastPSSpawn = gpGlobals->time + 0.2;				
 		}
 	}
-	if(m_bSpawnGrass == true) {
+	if((m_bSpawnGrass == true) && (m_bReSpawnPS == false)) {
 		if(m_flLastGrassSpawn < gpGlobals->time) {
 			pLastGrassSpawned = (CGrass*)UTIL_FindEntityByClassname( pLastGrassSpawned, "func_grass" );
 			if(pLastGrassSpawned != NULL)
@@ -3194,6 +3214,13 @@ void CBasePlayer::Spawn( void )
 	m_flNextChatTime = gpGlobals->time;
 
 	g_pGameRules->PlayerSpawn( this );
+
+	// particle vars for (re)initing
+	m_bReSpawnPS = false; 
+	m_bFirstTime = false;
+	m_flLastPSSpawn = 0.0f;
+	m_flLastPSReSpawn = 0.0f;
+	m_flLastGrassSpawn = 0.0f;
 }
 
 

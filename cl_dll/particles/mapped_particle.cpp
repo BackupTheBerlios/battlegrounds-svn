@@ -210,6 +210,9 @@ void CMappedParticle::Draw( void )
 	if ((int)sqrt((float)iNumFrames) != (int)abs(sqrt((float)iNumFrames)))
 		return;
 
+	if (iNumFrames == 0)
+		iNumFrames = 1;
+
 	float co01, co02, co03, co04;
 	co01 = flInverse * (int)((iCurrentFrame) % ((int)sqrt((float)iNumFrames)));
 	co02 = 1 - flInverse * (int)((iCurrentFrame) / sqrt((float)iNumFrames));

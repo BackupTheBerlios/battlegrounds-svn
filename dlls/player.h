@@ -192,14 +192,20 @@ public:
 	int					m_iSpectatorMode;
 
 	bool				m_bHasDied;
-
+	
+	//Ben
 	bool				m_bSpawnPS;
 	bool				m_bSpawnGrass;
 	float				m_flLastPSSpawn;
 	float				m_flLastGrassSpawn;
 	CGrass				*pLastGrassSpawned;
 	CParticleEmitter	*pLastPSSpawned;
-	//Ben
+	//BP
+	bool				m_bFirstTime;
+	bool				m_bReSpawnPS;
+	float				m_flLastPSReSpawn;
+	CParticleEmitter	*pLastRePSSpawned;
+	
 
 	int					random_seed;    // See that is shared between client & server for shared weapons code
 

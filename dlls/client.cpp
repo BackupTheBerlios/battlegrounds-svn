@@ -476,6 +476,31 @@ void ClientCommand( edict_t *pEntity )
 //		if(pPlayer->pCommander)
 //			pPlayer->pCommander->Rush(pPlayer);
 //	}
+	
+	//BP particle system reiniting
+	if ( FStrEq(pcmd, "cl_reinitparticles" ) )
+	{
+		extern int gmsgParticles;
+		MESSAGE_BEGIN(MSG_ONE, gmsgParticles, NULL, pPlayer->pev);
+			WRITE_SHORT(0);
+			WRITE_BYTE(0);
+			WRITE_COORD(0);
+			WRITE_COORD(0);
+			WRITE_COORD(0);
+			WRITE_COORD(0);
+			WRITE_COORD(0);
+			WRITE_COORD(0);
+			WRITE_SHORT(9999);
+			WRITE_STRING("");
+		MESSAGE_END();
+
+	pPlayer->m_bReSpawnPS = true;
+	pPlayer->m_bFirstTime = true;
+	pPlayer->m_bSpawnPS = false;
+	
+	//	pPlayer->m_bSpawnGrass		= true;
+	}
+
 	if ( FStrEq(pcmd, "say" ) )
 	{
 		Host_Say( pPlayer, 0 );
@@ -499,8 +524,8 @@ void ClientCommand( edict_t *pEntity )
 
 	else if ( FStrEq(pcmd, "drop" ) )
 	{
-		// player is dropping an item. 
-		GetClassPtr((CBasePlayer *)pev)->DropPlayerItem((char *)CMD_ARGV(1));
+		// player is dropping an item.  we don't need this in bg
+		//GetClassPtr((CBasePlayer *)pev)->DropPlayerItem((char *)CMD_ARGV(1));
 	}
 	else if ( FStrEq(pcmd, "fov" ) )
 	{
@@ -2055,3 +2080,4 @@ int AllowLagCompensation( void )
 {
 	return 1;
 }
+
